@@ -4,6 +4,16 @@ type Coffee{
   brand:String!
   flavors:[String!]!
 }
+
+input CreateCoffeeInput{
+name:String!
+brand:String!
+flavors:[String!]!
+}
+
 type Query{
   coffees:[Coffee!]!
+}
+type Mutation{
+  createCoffee(createCoffeeInput:CreateCoffeeInput!):Coffee
 }
