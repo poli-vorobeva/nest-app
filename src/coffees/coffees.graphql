@@ -4,6 +4,11 @@ type Coffee {
   brand: String!
   flavors: [String!]!
 }
+input UpdateCoffeeInput {
+  name: String
+  brand: String
+  flavors: [String!]
+}
 
 input CreateCoffeeInput {
   name: String!
@@ -13,8 +18,10 @@ input CreateCoffeeInput {
 
 type Query {
   coffees: [Coffee!]!
-  coffee(id: ID!): Coffee
+  coffee(id: ID!): Coffee!
 }
 type Mutation {
-  createCoffee(createCoffeeInput: CreateCoffeeInput!): Coffee
+  createCoffee(createCoffeeInput: CreateCoffeeInput!): Coffee!
+  updateCoffee(id: ID!, updateCoffeeInput: UpdateCoffeeInput): Coffee!
+  removeCoffee(id: ID!): Coffee!
 }

@@ -20,4 +20,17 @@ return this.coffeeService.findAll()
 :Promise<GraphQLTypes.Coffee>{ 
   return this.coffeeService.create(createCoffeeInput)
 }
+@Mutation('updateCoffee')
+async update(
+  @Args('id',ParseIntPipe) id:number,
+  @Args('updateCoffeeInput') updateCoffeeInput:GraphQLTypes.UpdateCoffeeInput
+):Promise<GraphQLTypes.Coffee>{
+return this.coffeeService.update(id,updateCoffeeInput)
+}
+@Mutation('removeCoffee')
+async remove(
+  @Args('id',ParseIntPipe) id:number
+):Promise<GraphQLTypes.Coffee>{
+return this.coffeeService.remove(id)
+}
 }
