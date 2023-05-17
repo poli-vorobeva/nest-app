@@ -1,8 +1,11 @@
+scalar Date
+
 type Coffee {
   id: ID!
   name: String!
   brand: String!
   flavors: [Flavor!]
+  createdAt: Date
 }
 type Flavor {
   id: ID!
@@ -26,6 +29,6 @@ type Query {
 }
 type Mutation {
   createCoffee(createCoffeeInput: CreateCoffeeInput!): Coffee!
-  updateCoffee(id: ID!, updateCoffeeInput: UpdateCoffeeInput): Coffee!
+  updateCoffee(id: ID!, updateCoffeeInput: UpdateCoffeeInput!): Coffee!
   removeCoffee(id: ID!): Coffee!
 }

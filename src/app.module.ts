@@ -5,7 +5,9 @@ import {GraphQLModule} from "@nestjs/graphql";
 import {ApolloDriver, ApolloDriverConfig} from "@nestjs/apollo";
 import { CoffeesModule } from './coffees/coffees.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { CoffeeEntity } from './coffees/entities/coffee.entity/coffee.entity';
+import { Coffee } from './coffees/entities/coffee.entity/coffee.entity';
+import {Flavor} from './coffees/entities/flavor.entity/flavor.entity'
+import { DateScalar } from './common/scalrs/date.scalar/date.scalar';
 
 @Module({
   imports: [
@@ -16,7 +18,7 @@ import { CoffeeEntity } from './coffees/entities/coffee.entity/coffee.entity';
       username: 'postgres',
       password: 'pass123',
       database: 'postgres',
-      entities:[CoffeeEntity],
+      entities:[Coffee,Flavor],
       synchronize: true
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
@@ -26,6 +28,6 @@ import { CoffeeEntity } from './coffees/entities/coffee.entity/coffee.entity';
     CoffeesModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService,DateScalar],
 })
 export class AppModule {}

@@ -12,7 +12,7 @@ import { Flavor } from './entities/flavor.entity/flavor.entity';
 export class CoffeesService {
   constructor(
     @InjectRepository(Coffee)
-    private readonly coffeesRepository:Repository<Coffee>
+    private readonly coffeesRepository:Repository<Coffee>,
     @InjectRepository(Flavor)
     private readonly flavorsRepository:Repository<Flavor>
     ){}
@@ -21,7 +21,7 @@ export class CoffeesService {
     return this.coffeesRepository.find()
   }
   async findOne(id:number):Promise<Coffee>{
-    const coffee = this.coffeesRepository.findOne({where:{id}})
+    const coffee =await this.coffeesRepository.findOne({where:{id}})
   if(!coffee){
     throw new UserInputError(`Coffee #${id} does not exist`)
   }
@@ -46,6 +46,7 @@ export class CoffeesService {
       (await Promise.all(
         updateCoffeeInput.flavors.map((name)=>this.preloadFlavorByName(name))
       ))
+
     const coffee = await this.coffeesRepository.preload(
       {id:+id,...updateCoffeeInput,flavors})
       if(!coffee){
