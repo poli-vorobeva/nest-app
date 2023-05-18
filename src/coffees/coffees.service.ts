@@ -7,6 +7,7 @@ import { UserInputError } from '@nestjs/apollo';
 import { CreateCoffeeInput } from './dto/create-coffee.input/create-coffee.input';
 import { UpdateCoffeeInput } from './dto/update-coffee.input/update-coffee.input';
 import { Flavor } from './entities/flavor.entity/flavor.entity';
+import { PubSub } from 'graphql-subscriptions';
 
 @Injectable()
 export class CoffeesService {
@@ -14,7 +15,8 @@ export class CoffeesService {
     @InjectRepository(Coffee)
     private readonly coffeesRepository:Repository<Coffee>,
     @InjectRepository(Flavor)
-    private readonly flavorsRepository:Repository<Flavor>
+    private readonly flavorsRepository:Repository<Flavor>,
+    private readonly pubSub:PubSub,
     ){}
 
   async findAll():Promise<Coffee[]>{
@@ -36,7 +38,9 @@ export class CoffeesService {
     const coffee = this.coffeesRepository.create({
       ...createCoffeeInput,flavors
     })
-    return this.coffeesRepository.save(coffee)
+    const newCoffeeEntity = await this.coffeesRepository.save(coffee)
+    this.pubSub.publish('coffeeAdded',{coffeeAded:newCoffeeEntity})
+    return newCoffeeEntity
   }
 
   async update(id:number, 
