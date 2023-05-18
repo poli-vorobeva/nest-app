@@ -3,21 +3,15 @@ import { Coffee } from './entities/coffee.entity/coffee.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Flavor } from 'src/graphql';
 import { Repository } from 'typeorm';
+import { FlavorsByCoffeeLoader } from './data-loader/flavors-by-coffee.loader/flavors-by-coffee.loader';
 
 @Resolver('Coffee')
 export class CoffeeFlavorsResolver {
   constructor(
-    @InjectRepository(Flavor)
-    private readonly flavorsRepository:Repository<Flavor>
-  ){}
+    private readonly flavorsByCoffeeLoader:FlavorsByCoffeeLoader){}
 
   @ResolveField('flavors')
   async getFlavorsCofee(@Parent() coffee:Coffee){
-   return this.flavorsRepository
-   .createQueryBuilder('flavor')
-   .innerJoin('flavor.coffees','coffees','coffees.id= :coffeeId',{
-    coffeeId:coffee.id
-   })
-   .getMany()
+   return this.flavorsByCoffeeLoader.load(coffee.id)
   }
 }
